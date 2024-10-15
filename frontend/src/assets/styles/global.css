@@ -1,0 +1,62 @@
+/* 应用于所有的变换 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+}
+
+html,
+body,
+#app {
+    height: 100%;
+}
+
+@font-face {
+    font-family: '程荣光刻楷';
+    src: url('@/assets/fonts/程荣光刻楷.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'FangSong_Regular';
+    src: url('@/assets/fonts/ChillHuoFangSong_Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Montserrat-Regular';
+    src: url('@/assets/fonts/Montserrat-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Italianno-Regular';
+    src: url('@/assets/fonts/Italianno-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Kanaka-Font';
+    src: url('@/assets/fonts/Kanaka-Font.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Montserrat-Regular';
+    font-weight: 600;
+}
+:lang(zh) {
+    font-family: '程荣光刻楷';
+    font-weight: 100;
+}
+:lang(en) {
+    font-family: 'Montserrat-Regular';
+    font-weight: 600;
+}
+:lang(ja) {
+    font-family: 'Kanaka-Font';
+    font-weight: 600;
+}
