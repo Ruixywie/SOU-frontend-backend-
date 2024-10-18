@@ -34,7 +34,7 @@
                     <h2 style="font: 100 36px '程荣光刻楷';">修改个人简介</h2>
                 </div>
             </template>
-            <template v-if="modalType === 'editIntroduction'" #subtitle>
+            <template v-if="modalType === 'editIntroduction'" #content>
                 <div style="display: flex; justify-content: center; align-items: center;">
                     <textarea v-model="newIntroduction" rows="5" cols="30"
                         style="width: 700px; height:450px; padding: 10px; font: 100 22px '程荣光刻楷'; color: #6e6e6e;"></textarea>
@@ -125,6 +125,7 @@ const getAvatar = async () => {
         const response = await axios.get('/api/get_avatar', { responseType: 'blob' });
         // 使用 URL.createObjectURL 将 blob 转换为图片 URL
         avatar.value = URL.createObjectURL(response.data);
+        console.log(avatar.value);
     } catch (error) {
         console.error('Error fetching avatar:', error);
         // 可以在这里设置默认头像
