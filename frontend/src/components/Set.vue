@@ -2,7 +2,7 @@
 <template>
     <div class="set" @click="showDetails">
         <!-- 使用 <img> 标签展示压缩的图片 -->
-        <img :src="compressedImageBlobUrl" alt="Thumbnail" class="thumbnail-image" />
+        <img v-if="compressedImageBlobUrl" :src="compressedImageBlobUrl" alt="Thumbnail" class="thumbnail-image" />
 
         <!-- 下载按钮 -->
         <a class="download-button" :href="imageBlobUrl" :download="setData.name" @click.stop.prevent="downloadImage">
@@ -65,7 +65,11 @@ const compressImage = (img) => {
 // 触发父组件的展示详情事件
 const emit = defineEmits(['showDetails']);
 const showDetails = () => {
-    emit('showDetails', props.setData);
+    // 传递 setData，并传递压缩后的图片 URL
+    emit('showDetails', {
+        ...props.setData,
+        compressedImageBlobUrl: compressedImageBlobUrl.value
+    });
 };
 
 // 下载图片

@@ -10,7 +10,7 @@
     </div>
 
     <!-- 显示详情的面板 -->
-    <DisplayPanel v-if="currentSet" :set="currentSet" />
+    <DisplayPanel v-if="currentSet" :set="currentSet" @close="handleClosePanel" @switchSet="handleSwitchSet" />
 
     <!-- Modal -->
     <Modal :visible="isModalVisible" @close="closeModal">
@@ -62,6 +62,7 @@ const selectedFile = ref(null); // 选中的图片文件
 const previewImage = ref(null); // 预览图片的 URL
 const pictureSets = ref([]); // 存储图片集数据
 const currentSet = ref(null); // 当前展示的图片集
+const currentIndex = ref(0); // 当前显示的 set 索引
 const functionButtons = ref([
   {
     text: '上传',
@@ -168,8 +169,52 @@ onMounted(async () => {
 });
 
 // 处理显示详情的事件
-const handleShowDetails = (set) => {
+const handleShowDetails = async (set) => {
   currentSet.value = set;
+  currentIndex.value = pictureSets.value.findIndex((s) => s.id === set.id);
+
+  // 获取当前图片集的评论
+  currentSet.value.comments = await fetchComments(set.id);
+};
+
+// 关闭展示面板
+const handleClosePanel = () => {
+  currentSet.value = null;
+};
+
+// 左右切换图片集
+const handleSwitchSet = async (direction) => {
+  if (direction === 'left') {
+    currentIndex.value = (currentIndex.value - 1 + pictureSets.value.length) % pictureSets.value.length;
+  } else if (direction === 'right') {
+    currentIndex.value = (currentIndex.value + 1) % pictureSets.value.length;
+  }
+  currentSet.value = pictureSets.value[currentIndex.value]; // 更新当前显示的图片集
+
+  // 获取当前图片集的评论
+  currentSet.value.comments = await fetchComments(currentSet.value.id);
+};
+
+// 获取当前图片集的评论
+const fetchComments = async (imageId) => {
+  try {
+    const response = await fetch(`/api/get_comments?image_id=${imageId}`);
+    const comments = await response.json();
+
+    // 为每个评论的头像创建一个 Blob URL
+    for (let comment of comments) {
+      // const ImageUrl = `/api${imageSet.image_url}`;
+      const avatarUrl = `/api${comment.avatar}`;
+      // const imageResponse = await axios.get(ImageUrl, { responseType: 'blob' });
+      const avatarResponse = await axios.get(avatarUrl, { responseType: 'blob' });
+      comment.avatar = URL.createObjectURL(avatarResponse.data);  // 使用 Blob 创建头像的 URL
+    }
+
+    return comments;
+  } catch (error) {
+    console.error('Error fetching comments:', error);
+    return [];
+  }
 };
 </script>
 

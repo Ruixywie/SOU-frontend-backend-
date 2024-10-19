@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify, current_app, session, send_from_directory
 from models import db, ImageSet, ImageReview, User
-from PIL import Image
 import os
 from datetime import datetime
 from werkzeug.utils import secure_filename
@@ -74,13 +73,14 @@ def get_set_info(set_id):
 # 添加评论
 @fulilian_blueprint.route('/add_comment', methods=['POST'])
 def add_comment():
-    if 'user_uid' not in session:
-        return jsonify({'error': '用户未登录'}), 401
+    # if 'user_uid' not in session:
+    #     return jsonify({'error': '用户未登录'}), 401
 
     data = request.json
     image_id = data.get('image_id')
     comment_text = data.get('comment')
-    user_uid = session['user_uid']  # 从 session 获取当前用户的 UID
+    # user_uid = session['user_uid']  # 从 session 获取当前用户的 UID
+    user_uid = '22017530364057'
 
     # 创建新的评论
     new_review = ImageReview(
@@ -150,9 +150,17 @@ def get_image(set_id):
 @fulilian_blueprint.route('/get_comments')
 def get_comments():
     image_id = request.args.get('image_id')
+
     comments = ImageReview.query.filter_by(image_id=image_id).all()  # 查询该图片的所有评论
-    return jsonify([{
-        'avatar': user.avatar,
-        'username': user.username,
-        'comment': review.comment
-    } for review in comments for user in User.query.filter_by(uid=review.user_uid).all()])
+    
+    response_data = []
+    for review in comments:
+        user = User.query.filter_by(uid=review.user_uid).first()
+        if user:
+            response_data.append({
+                'avatar': f'/get_avatar',  # 返回头像
+                'username': user.username,
+                'comment': review.comment
+            })
+
+    return jsonify(response_data)

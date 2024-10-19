@@ -1,5 +1,7 @@
 from flask import Flask
 from models import db, User, ImageSet, ImageReview, Article
+from flask_admin import Admin
+from admin_views import UserView, ImageSetView, ImageReviewView, ArticleView
 
 
 def create_app():
@@ -17,13 +19,13 @@ def create_app():
     db.init_app(app)
 
 
-    # # 设置管理面板
-    # admin = Admin(app, name='管理面板', template_mode='bootstrap3')
-    # # 添加模型到管理员界面
-    # admin.add_view(UserView(User, db.session))
-    # admin.add_view(ImageSetView(ImageSet, db.session))
-    # admin.add_view(ImageReviewView(ImageReview, db.session))
-    # admin.add_view(ArticleView(Article, db.session))
+    # 设置管理面板
+    admin = Admin(app, name='管理面板', template_mode='bootstrap3')
+    # 添加模型到管理员界面
+    admin.add_view(UserView(User, db.session))
+    admin.add_view(ImageSetView(ImageSet, db.session))
+    admin.add_view(ImageReviewView(ImageReview, db.session))
+    admin.add_view(ArticleView(Article, db.session))
 
 
     # # 初始化 Redis
