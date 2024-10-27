@@ -4,6 +4,7 @@ from flask_cors import CORS
 
 from routes.personal_routes import personal_blueprint
 from routes.fulilian_routes import fulilian_blueprint
+from routes.articles_routes import articles_blueprint
 
 app = create_app()
 CORS(app)
@@ -12,6 +13,7 @@ CORS(app)
 # 注册蓝图
 app.register_blueprint(personal_blueprint)
 app.register_blueprint(fulilian_blueprint)
+app.register_blueprint(articles_blueprint)
 
 
 if __name__ == "__main__":

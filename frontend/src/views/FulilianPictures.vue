@@ -203,9 +203,7 @@ const fetchComments = async (imageId) => {
 
     // 为每个评论的头像创建一个 Blob URL
     for (let comment of comments) {
-      // const ImageUrl = `/api${imageSet.image_url}`;
       const avatarUrl = `/api${comment.avatar}`;
-      // const imageResponse = await axios.get(ImageUrl, { responseType: 'blob' });
       const avatarResponse = await axios.get(avatarUrl, { responseType: 'blob' });
       comment.avatar = URL.createObjectURL(avatarResponse.data);  // 使用 Blob 创建头像的 URL
     }
