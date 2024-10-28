@@ -125,7 +125,6 @@ const getAvatar = async () => {
         const response = await axios.get('/api/get_avatar', { responseType: 'blob' });
         // 使用 URL.createObjectURL 将 blob 转换为图片 URL
         avatar.value = URL.createObjectURL(response.data);
-        console.log(avatar.value);
     } catch (error) {
         console.error('Error fetching avatar:', error);
         // 可以在这里设置默认头像

@@ -54,7 +54,7 @@ const articleTitle = ref(''); // 文章标题
 const functionButtons = ref([
     {
         text: '上传',
-        icon: '/icon/id_card.svg',
+        icon: '/icon/upload.svg',
         onClick: uploadArticle,
     },
 ]);

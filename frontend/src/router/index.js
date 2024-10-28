@@ -16,7 +16,8 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: { navbarType: 'home' } // 首页导航栏
   },
   {
     path: '/my-home-page',

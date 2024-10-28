@@ -19,15 +19,7 @@
             </div>
             <a class="display-download-button" :href="set.imageBlobUrl" :download="set.name">
                 <!-- 下载按钮图标 -->
-                <svg t="1727246300741" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                    xmlns="http://www.w3.org/2000/svg" p-id="8495">
-                    <path
-                        d="M505.7 661c3.2 4.1 9.4 4.1 12.6 0l112-141.7c4.1-5.2 0.4-12.9-6.3-12.9h-74.1V168c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v338.3H400c-6.7 0-10.4 7.7-6.3 12.9l112 141.8z"
-                        p-id="8496"></path>
-                    <path
-                        d="M878 626h-60c-4.4 0-8 3.6-8 8v154H214V634c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v198c0 17.7 14.3 32 32 32h684c17.7 0 32-14.3 32-32V634c0-4.4-3.6-8-8-8z"
-                        p-id="8497"></path>
-                </svg>
+                <img :src="'/icon/download.svg'" alt="icon" />
             </a>
         </div>
 
@@ -57,12 +49,7 @@
                 <input v-model="newComment" type="text" class="comment-input" placeholder="输入文字..." />
                 <!-- 发送按钮 -->
                 <button class="send-button" @click="sendComment">
-                    <svg t="1727447306870" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                        xmlns="http://www.w3.org/2000/svg" p-id="8495" width="200" height="200">
-                        <path
-                            d="M868 545.5L536.1 163c-12.7-14.7-35.5-14.7-48.3 0L156 545.5c-4.5 5.2-0.8 13.2 6 13.2h81c4.6 0 9-2 12.1-5.5L474 300.9V864c0 4.4 3.6 8 8 8h60c4.4 0 8-3.6 8-8V300.9l218.9 252.3c3 3.5 7.4 5.5 12.1 5.5h81c6.8 0 10.5-8 6-13.2z"
-                            p-id="8496"></path>
-                    </svg>
+                    <img :src="'/icon/arrowup.svg'" alt="icon" />
                 </button>
             </div>
         </div>
@@ -229,13 +216,10 @@ const sendComment = async () => {
     background: radial-gradient(circle, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 70%);
 }
 
-.display-download-button svg {
-    width: 60px;
-    height: 60px;
-}
-
-.display-download-button svg path {
-    fill: #ffffff;
+.display-download-button img {
+    width: 40px;
+    height: 40px;
+    filter: invert(100%);
 }
 
 .notions {
@@ -328,13 +312,10 @@ const sendComment = async () => {
     cursor: pointer;
 }
 
-.send-button svg {
+.send-button img {
     width: 25px;
     height: 25px;
-}
-
-.send-button svg path {
-    fill: #4c4c4c;
+    filter: invert(40%);
 }
 
 /* 留言部分 */

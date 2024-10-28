@@ -66,7 +66,7 @@ const currentIndex = ref(0); // 当前显示的 set 索引
 const functionButtons = ref([
   {
     text: '上传',
-    icon: '/icon/id_card.svg',
+    icon: '/icon/upload.svg',
     onClick: uploadPicture,
   },
 ]);
