@@ -2,13 +2,12 @@
     <article :id="`post-${articleData.id}`" class="masonry-item">
         <div class="masonry-inner">
             <div class="entry-top">
-                <router-link :to="{ name: 'ArticleDetail', query: { p: articleData.id } }" class="entry-thumbnail">
+                <a :href="articleData.link" class="entry-thumbnail">
                     <img :src="articleData.thumbnail" :alt="articleData.title" />
                     <span class="thumb-icon"><i class="fas fa-star"></i></span>
-                </router-link>
+                </a>
                 <div class="entry-category">
-                    <router-link :to="{ name: 'ArticleDetail', query: { p: articleData.id } }" rel="bookmark">{{
-                        articleData.title }}</router-link>
+                    <a :href="articleData.categoryLink" rel="category">{{ articleData.category }}</a>
                 </div>
             </div>
             <h2 class="entry-title">
@@ -18,7 +17,7 @@
                 <li class="entry-date"><i class="far fa-calendar"></i> {{ articleData.date }}</li>
                 <li class="entry-comments">
                     <a :href="`${articleData.link}#comments`">
-                        <i class="far fa-comment"></i><span>{{ articleData.comments }}</span>
+                        <i class="far fa-comment"></i><span>{{ articleData.comments }} 评论</span>
                     </a>
                 </li>
                 <li class="entry-views"><span><i class="far fa-eye"></i> {{ articleData.views }} 次浏览</span></li>
@@ -141,6 +140,7 @@ const articleData = computed(() => ({
 /* 元数据部分（日期、评论、浏览量） */
 .entry-meta {
     display: flex;
+    justify-content: space-between;
     gap: 12px;
     color: #888;
     font-size: 0.9em;

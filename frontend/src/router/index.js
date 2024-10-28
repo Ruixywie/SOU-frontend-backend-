@@ -4,7 +4,6 @@ import { ref } from 'vue';
 import Home from '@/views/Home.vue'
 import MyHomePage from '@/views/MyHomePage.vue';
 import Articles from '@/views/Articles.vue';
-import ArticleDetail from '@/views/ArticleDetail.vue';
 import Login from '@/views/Login.vue';
 import Fulilian from '@/views/Fulilian.vue';
 import FulilianPictures from '@/views/FulilianPictures.vue';
@@ -28,12 +27,6 @@ const routes = [
     path: '/articles',
     name: 'Articles',
     component: Articles,
-  },
-  {
-    path: '/article',
-    name: 'ArticleDetail',
-    component: ArticleDetail, // 文章详情组件
-    props: true // 允许将路由参数作为组件的 props
   },
   {
     path: '/login',

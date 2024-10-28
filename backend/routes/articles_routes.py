@@ -26,97 +26,20 @@ def article_page(article_id):
 
 
 
-@articles_blueprint.route('/upload_article_content', methods=['POST'])
-def upload_article_content():
+@articles_blueprint.route('/upload_article_link', methods=['POST'])
+def upload_article_link():
     # 获取文章名称和描述
-    article_name = request.form.get('articleName')
-    article_description = request.form.get('articleDescription')
-    html_content = request.form.get('htmlContent')
+    article_url = request.form.get('articleUrl')
+    article_title = request.form.get('articleTitle')
 
     # 检查输入是否合法
-    if not article_name or not article_description or not html_content:
-        return jsonify(success=False, message='文章名称、描述和内容不能为空。'), 400
+    if not article_url or not article_title:
+        return jsonify(success=False, message='文章URL、标题不能为空。'), 400
     
-    # 使用 BeautifulSoup 解析 HTML 内容
-    soup = BeautifulSoup(html_content, 'html.parser')
-
-    # 删除所有 <style> 标签（去除嵌入式 CSS）
-    for style_tag in soup.find_all('style'):
-        style_tag.decompose()
-
-    # 删除所有行内样式
-    for tag in soup.find_all(True):  # True 表示匹配所有标签
-        if 'style' in tag.attrs:
-            del tag.attrs['style']
-
-    # 将处理后的 HTML 转换为字符串
-    cleaned_html_content = str(soup)
-
-
-    # 获取上传的图像文件
-    images = request.files.getlist('images[]')
-    if not images:
-        return jsonify(success=False, message='未上传任何图像。'), 400
-    
-
-    # 创建新的文件夹路径，使用当前时间戳作为文件夹名称
-    current_time = datetime.now().strftime("%Y%m%d%H%M%S") # 获取当前时间并格式化为所需格式（例如：20240925185953）
-    folder_name = f'article_{current_time}'
-
-    # 设置上传文件的保存路径（仅用于存储时的路径）
-    UPLOAD_FOLDER = os.path.join('static', 'articles', folder_name)
-    # 确保上传文件夹存在
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-
-    # 保存 html 文件，重命名为当前时间戳
-    html_file_name = f'article_{current_time}.html'  # 将 html 文件重命名
-    html_file_path = os.path.join(UPLOAD_FOLDER, html_file_name)  # 指定文件名和路径
-    with open(html_file_path, 'w', encoding='utf-8') as f:
-        f.write(cleaned_html_content)
-
-    # 保存所有图像文件
-    for image in images:
-        # 使用 os.path.basename() 来提取文件名
-        image_filename = os.path.basename(image.filename)
-        image_file_path = os.path.join(UPLOAD_FOLDER, image_filename)  # 指定文件名和路径
-        image.save(image_file_path)
-
-        # 在 HTML 中查找所有与该图片文件名匹配的 <img> 标签
-        for img in soup.find_all('img'):
-            original_src = img.get('src')  # 获取原始的 src 属性
-            if original_src:
-                # URL 解码，处理像空格等特殊字符
-                decoded_src = urllib.parse.unquote(original_src)
-                # 提取 src 中的文件名部分（忽略路径）
-                img_filename = os.path.basename(decoded_src)
-
-                if img_filename == image_filename:  # 如果文件名匹配
-                    # 更新 <img> 标签的 src 路径为相对路径
-                    img['src'] = f'/static/articles/{folder_name}/{image_filename}'
-                    print(f"Updated image src: {img['src']}")
-
-                    # 如果有父级 <a> 标签，更新其 href 属性
-                    parent_link = img.find_parent('a')
-                    if parent_link:
-                        parent_link['href'] = img['src']
-                        print(f"Updated parent link href: {parent_link['href']}")
-
-    with open(html_file_path, 'w', encoding='utf-8') as f:
-        f.write(str(soup))  # 使用 soup 生成最终的 HTML 内容
-
-
-    # 生成相对路径(从 "static" 后开始存储）
-    relative_file_path = os.path.join('articles', folder_name, html_file_name)
-
-    # 将文件路径中的反斜杠替换为正斜杠
-    relative_file_path = relative_file_path.replace('\\', '/')
-
     # 将文章信息存储到数据库
     new_article = Article(
-        name=article_name,
-        article_url=relative_file_path,
-        description=article_description
+        name=article_title,
+        article_url=article_url
     )
     db.session.add(new_article)
     db.session.commit()
@@ -124,7 +47,7 @@ def upload_article_content():
     # 获取新插入行的 id
     article_id = new_article.id
 
-    return jsonify(success=True, message='文章上传成功！', articleID = article_id, articleName=article_name, articleDescription=article_description, articleUrl=relative_file_path)
+    return jsonify(success=True, message='文章上传成功！', articleID = article_id, articleTitle=article_title, articleUrl=article_url)
 
 
 
@@ -134,9 +57,9 @@ def get_articles():
     articles_data = [{
         'id': article.id,
         'title': article.name,
-        'link': url_for('static', filename=article.article_url, _external=True),  # 转换为完整 URL
+        'link': article.article_url, # URL
         'description': article.description,
-        'date': article.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        'date': article.created_at.strftime('%Y-%m-%d')
     } for article in articles]
 
     return jsonify(articles_data)
