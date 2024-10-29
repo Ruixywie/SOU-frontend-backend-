@@ -1,6 +1,6 @@
 <template>
   <!-- 主页导航栏 -->
-  <nav v-if="type === 'home'" class="navbar">
+  <nav v-if="type === 'home'" class="navbar" :class="isScrolled ? 'non-transparent' : 'transparent'">
     <div class="navbar-container">
       <h1 class="navbar-title">SOU</h1>
       <ul class="navbar-menu">
@@ -13,35 +13,63 @@
     </div>
   </nav>
   <!-- 其他导航栏 -->
-  <nav v-else class="navbar">
+  <nav v-else class="navbar" :class="isScrolled ? 'non-transparent' : 'transparent'">
     <div class="navbar-container">
       <h1 class="navbar-title">SOU</h1>
       <ul class="navbar-menu">
-        <li class="navbar-item"><a href="/"><img :src="'/icon/home-fill.svg'" alt="icon" /></a></li>
+        <li class="navbar-item"><a href="/"><img :src="'/icon/home.svg'" alt="icon" /></a></li>
         <li class="navbar-item"><a lang="zh" href="/login">登录</a></li>
       </ul>
     </div>
   </nav>
 </template>
 
-<script>
-export default {
-  props: {
-    type: {
-      type: String,
-      default: 'default'
-    }
+<script setup>
+import { ref, onMounted, onBeforeUnmount, defineProps  } from 'vue';
+
+const props = defineProps({
+  type: {
+    type: String,
+    default: 'default'
   }
-};
+});
+
+const isScrolled = ref(false);
+
+// 定义滚动触发事件
+function toggleNavbar() {
+  isScrolled.value = window.scrollY > 100;
+}
+
+// 组件挂载时添加滚动事件监听
+onMounted(() => {
+  window.addEventListener('scroll', toggleNavbar);
+});
+
+// 组件卸载时移除滚动事件监听
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', toggleNavbar);
+});
 </script>
 
 <style scoped>
+.faded {
+  opacity: 0;
+}
+
+.transparent {
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.non-transparent {
+  background-color: rgb(255, 255, 255);
+}
+
 .navbar {
   position: fixed;
   top: 0;
   width: 100%;
   height: 60px;
-  background-color: rgba(255, 255, 255, 0);
   z-index: 10;
   padding: 0 40px;
   transition: .4s;
@@ -59,7 +87,6 @@ export default {
   color: #000000;
   text-transform: uppercase;
   /* 将 logo 文本转为大写 */
-  text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.8);
 }
 
 .navbar-menu {
@@ -76,7 +103,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: .6s;
+  transition: .4s;
 }
 
 .navbar-item a {
@@ -84,13 +111,22 @@ export default {
   align-items: center;
   justify-content: center;
   font-size: 22px;
+  color: #6f6f6f;
+  transition: .4s;
+}
+
+.navbar-item a:hover {
   color: #000000;
-  text-shadow: 0px 0px 3px rgba(255, 255, 255, 1);
-  transition: .6s;
 }
 
 .navbar-item a img {
   width: 30px;
   height: 30px;
+  filter: invert(40%);
+  transition: .4s;
+}
+
+.navbar-item a img:hover {
+  filter: invert(0%);
 }
 </style>

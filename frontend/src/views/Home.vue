@@ -7,8 +7,8 @@
     <div class="section" v-if="!loading">
       <div class="title-abbreviation">SOU</div>
       <div class="title">Sharing Of Universe</div>
-      <div class="description">Connect to everything!</div>
-      <img id="cover-image" src="@/assets/images/Home/cover.png">
+      <div class="description">Combine With Everything!</div>
+      <img class="cover-image" src="@/assets/images/Home/cover.png">
 
       <div style="display: flex; gap: 30px; margin-top: 30px;">
         <a id="show-documentation" class="button" lang="zh" @click="openModal('documentation')">重要公告</a>
@@ -86,6 +86,7 @@ onMounted(async () => {
   position: relative;
   display: flex;
   flex-direction: column;
+  gap: 5px;
   width: 100%;
   padding: 50px 260px 0px 260px;
 }
@@ -112,11 +113,12 @@ onMounted(async () => {
 }
 
 /* 封面图片 */
-#cover-image {
+.cover-image {
   position: absolute;
   width: 300px;
-  top: 30px;
-  right: 280px;
+  top: 40px;
+  right: 260px;
+  filter: drop-shadow(0px 8px 12px rgba(0, 0, 0, 0.2));
   z-index: -1;
 }
 
@@ -197,7 +199,7 @@ onMounted(async () => {
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2);
 }
 
 .card h2 {

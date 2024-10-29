@@ -88,7 +88,7 @@ export default {
 .layer span,
 .module-text {
     color: #ffffff;
-    font: 100 25px '优设标题黑';
+    font: 100 25px '程荣光刻楷';
     text-shadow: 0 2px 5px rgba(0,0,0,0.4);
     white-space: nowrap; /* 防止文本换行 */
     letter-spacing: 4px; /* 字符间距 */
@@ -153,12 +153,12 @@ export default {
 }
 .intro-big {
     color: #ffffff;
-    font: 100 20px '优设标题黑';
+    font: 100 20px '程荣光刻楷';
     text-shadow: 0 0 5px rgba(0,0,0,0.8);
 }
 .intro-small {
     color: #ffffff;
-    font: 100 18px '优设标题黑';
+    font: 100 18px '程荣光刻楷';
     text-shadow: 0 0 5px rgba(0,0,0,0.8);
 }
 .cover {
