@@ -14,7 +14,7 @@ def get_avatar():
     # 在 UPLOAD_FOLDER 目录下查找以 'avatar' 开头的文件
     for file in os.listdir(UPLOAD_FOLDER):
         if file.startswith('avatar'):
-            return send_from_directory(UPLOAD_FOLDER, file, mimetype='image/jpeg')
+            return send_from_directory(UPLOAD_FOLDER, file, mimetype='image/png')
         
     return jsonify({'status': 'error', 'message': 'Avatar image not found'}), 404
 

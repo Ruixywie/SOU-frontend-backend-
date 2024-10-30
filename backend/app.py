@@ -11,9 +11,9 @@ CORS(app)
 
 
 # 注册蓝图
-app.register_blueprint(personal_blueprint)
-app.register_blueprint(fulilian_blueprint)
-app.register_blueprint(articles_blueprint)
+app.register_blueprint(personal_blueprint, url_prefix='/api')
+app.register_blueprint(fulilian_blueprint, url_prefix='/api')
+app.register_blueprint(articles_blueprint, url_prefix='/api')
 
 
 if __name__ == "__main__":

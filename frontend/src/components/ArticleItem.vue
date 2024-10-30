@@ -37,11 +37,12 @@ const props = defineProps({
     },
 });
 
+import defaultThumbnail from '@/assets/images/article/image.png';
 // 设置默认值
 const articleData = computed(() => ({
     id: props.article.id || 0,
     link: props.article.link || '#',
-    thumbnail: props.article.thumbnail || 'src/assets/images/article/image.png',
+    thumbnail: props.article.thumbnail || defaultThumbnail,
     title: props.article.title || 'Untitled Article',
     category: props.article.category || '暂未分类',
     categoryLink: props.article.categoryLink || '#',

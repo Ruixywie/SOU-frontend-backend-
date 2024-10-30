@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { ref } from 'vue';
+import { ref, nextTick  } from 'vue';
 // 从 views 文件夹中导入页面组件
 import Home from '@/views/Home.vue'
 import MyHomePage from '@/views/MyHomePage.vue';
@@ -58,9 +58,11 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach(() => {
-  setTimeout(() => {
-    loading.value = false; // 加载完成，隐藏 Loader
-  }, 500);
+  nextTick(() => {
+    setTimeout(() => {
+      loading.value = false; // 加载完成，隐藏 Loader
+    }, 500);
+  });
 });
 
 export { loading };
