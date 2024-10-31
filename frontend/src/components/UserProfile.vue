@@ -40,7 +40,8 @@ export default {
 .individual {
     position: relative;
     display: flex;
-    width: 1100px;
+    width: 100%;
+    min-width: 600px;
     height: 500px;
     border-radius: 30px;
     box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.6);

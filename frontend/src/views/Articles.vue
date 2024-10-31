@@ -41,8 +41,6 @@ import ArticleItem from "@/components/ArticleItem.vue";
 import { onMounted, ref } from "vue";
 import axios from 'axios';
 import FunctionBar from '@/components/FunctionBar.vue';
-import imagesLoaded from "imagesloaded";
-import Masonry from "masonry-layout";
 import Modal from '@/components/Modal.vue';
 import { useModal } from '@/composables/useModal';
 
@@ -106,16 +104,7 @@ const fetchArticles = async () => {
 };
 
 onMounted(async () => {
-    await fetchArticles(); // 确保文章加载后再初始化 Masonry
-    imagesLoaded("#masonry", () => {
-        new Masonry("#masonry", {
-            itemSelector: ".masonry-item",
-            columnWidth: ".masonry-item", //列宽
-            gutter: 10, // 设置间距
-            transitionDuration: '0.6s', // 设置过渡时间
-            resize: true, // 窗口大小改变时重新布局
-        });
-    });
+    await fetchArticles();
 });
 </script>
 
@@ -132,13 +121,16 @@ onMounted(async () => {
     /* 上下 左右 */
     z-index: 1;
     overflow: hidden;
+    border: solid 2px #000;
 }
 
 .masonry {
     position: relative;
     width: 100%;
-    min-width: 400px;
-    height: auto;
+    min-width: 350px;
+    border: solid 2px #da0f0f;
+    columns: 4 350px;
+    column-gap: 20px;        
 }
 
 .article-function-bar {

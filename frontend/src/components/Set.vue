@@ -2,7 +2,7 @@
 <template>
     <div class="set" @click="showDetails">
         <!-- 使用 <img> 标签展示压缩的图片 -->
-        <img v-if="compressedImageBlobUrl" :src="compressedImageBlobUrl" alt="Thumbnail" class="thumbnail-image" />
+        <img v-if="compressedImageBlobUrl" v-lazy="compressedImageBlobUrl" alt="Thumbnail" class="thumbnail-image" />
 
         <!-- 下载按钮 -->
         <a class="download-button" :href="imageBlobUrl" :download="setData.name" @click.stop.prevent="downloadImage">

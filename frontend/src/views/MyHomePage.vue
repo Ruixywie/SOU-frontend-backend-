@@ -111,7 +111,7 @@ import blenderIcon from '@/assets/images/class/Blender/blender-icon.png';
 import filmPoster from '@/assets/images/class/Films/film.png';
 import filmIcon from '@/assets/images/class/Films/film-icon.png';
 const LinkModuleData = ref([
-    { id: 1, title: '芙莉莲', subtitle: '猫猫', poster: fulilianPoster, icon: fulilianIcon, link: 'your-link-here' },
+    { id: 1, title: '芙莉莲', subtitle: '猫猫', poster: fulilianPoster, icon: fulilianIcon, link: '/fulilian' },
     { id: 2, title: '我的照片', subtitle: '拍的照片', poster: photoPoster, icon: photoIcon, link: '#' },
     { id: 3, title: 'blender', subtitle: '开放世界', poster: blenderPoster, icon: blenderIcon, link: '#' },
     { id: 4, title: '电影', subtitle: '资源', poster: filmPoster, icon: filmIcon, link: '#' },
@@ -273,7 +273,7 @@ onMounted(() => {
 /* 内容部分 */
 .section {
     width: 100%;
-    min-width: 1280px;
+    min-width: 800px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -291,6 +291,7 @@ onMounted(() => {
 /* 个人信息单元 */
 .individual-container {
     position: relative;
+    width: 85%;
     display: flex;
     justify-content: center;
     /* 在垂直方向上居中对齐子元素 */

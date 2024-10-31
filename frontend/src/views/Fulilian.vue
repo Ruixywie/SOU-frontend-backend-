@@ -178,6 +178,7 @@ onMounted(() => {
     /* 允许换行 */
     justify-content: center;
     align-items: center;
+    margin-bottom: 60px;
 }
 
 .box {

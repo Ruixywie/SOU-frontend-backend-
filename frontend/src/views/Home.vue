@@ -1,16 +1,13 @@
 <template>
   <div class="home">
-    <!-- 当加载中时显示 Loader，完成后才显示内容 -->
-    <Loader :visible="loading" />
-
-    <!-- 当数据加载完成时才显示内容 -->
-    <div class="section" v-if="!loading">
-      <div class="title-abbreviation">SOU</div>
-      <div class="title">Sharing Of Universe</div>
-      <div class="description">Combine With Everything!</div>
-      <img class="cover-image" src="@/assets/images/Home/cover.png">
-
-      <div style="display: flex; gap: 30px; margin-top: 30px;">
+    <div class="section">
+      <div style="display: flex; flex-direction: column; width: 65%; gap: 5px;">
+        <div class="title-abbreviation">SOU</div>
+        <div class="title">Sharing Of Universe</div>
+        <div class="description">Combine With Everything!</div>
+        <img class="cover-image" src="@/assets/images/Home/cover.png">
+      </div>
+      <div style="display: flex; width: 65%; gap: 30px;">
         <a id="show-documentation" class="button" lang="zh" @click="openModal('documentation')">重要公告</a>
         <router-link id="open-my-home-page" class="button" lang="zh" :to="{ name: 'MyHomePage' }">我的主页</router-link>
         <router-link id="open-articles-page" class="button" lang="zh" :to="{ name: 'Articles' }">文章</router-link>
@@ -64,31 +61,31 @@
 import { ref, onMounted } from 'vue';
 import Modal from '@/components/Modal.vue';
 import { useModal } from '@/composables/useModal';
-import Loader from '@/components/Loader.vue'
 
 const { isModalVisible, modalType, openModal, closeModal } = useModal();
-const loading = ref(true)
 
-onMounted(async () => {
-  loading.value = false // 加载完成后隐藏 Loader
-})
+
 </script>
 
 <style scoped>
 /* home */
 .home {
   height: 100%;
+  width: max-content;
   background-color: #eeeeee;
 }
 
 .section {
-  transform: translateY(70px);
+  transform: translateY(60px);
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
   width: 100%;
-  padding: 50px 260px 0px 260px;
+  min-width: 800px;
+  padding-top: 50px;
 }
 
 /* 缩略标题 */
@@ -116,7 +113,7 @@ onMounted(async () => {
 .cover-image {
   position: absolute;
   width: 300px;
-  top: 40px;
+  top: 50px;
   right: 260px;
   filter: drop-shadow(0px 8px 12px rgba(0, 0, 0, 0.2));
   z-index: -1;
@@ -155,11 +152,11 @@ onMounted(async () => {
 
 /* 推荐链接容器 */
 .recommends {
-  width: 100%;
+  width: 65%;
   display: flex;
   gap: 40px;
-  margin-top: 30px;
   padding: 20px;
+  overflow-x: auto;
 }
 
 /* 每个链接样式 */
@@ -170,10 +167,10 @@ onMounted(async () => {
   align-items: flex-end;
   justify-content: flex-end;
   border: solid 1px rgba(255, 255, 255, 0.2);
-  width: 300px;
+  width: 100%;
+  min-width: 200px;
+  max-width: 300px;
   height: 200px;
-  min-width: 300px;
-  min-height: 200px;
   padding: 10px 20px;
   border-radius: 24px;
   box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.25);

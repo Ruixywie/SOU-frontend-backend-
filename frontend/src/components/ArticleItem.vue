@@ -3,7 +3,7 @@
         <div class="masonry-inner">
             <div class="entry-top">
                 <a :href="articleData.link" class="entry-thumbnail">
-                    <img :src="articleData.thumbnail" :alt="articleData.title" />
+                    <img v-lazy="articleData.thumbnail" :alt="articleData.title" />
                     <span class="thumb-icon"><i class="fas fa-star"></i></span>
                 </a>
                 <div class="entry-category">
@@ -55,11 +55,11 @@ const articleData = computed(() => ({
 <style scoped>
 /* 单个 article 外层容器 */
 .masonry-item {
-    width: 350px;
+    width: 100%;
     background: #fff;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
     border-radius: 8px;
-    margin: 15px;
+    margin-bottom: 20px;
     overflow: hidden;
     transition: transform 0.3s ease;
 }

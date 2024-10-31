@@ -101,6 +101,7 @@ onBeforeUnmount(() => {
 .carousel-images {
     position: relative;
     width: 400px;
+    min-width: 400px;
     height: 400px;
     border-radius: 30px;
     overflow: hidden;
