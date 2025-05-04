@@ -1,13 +1,14 @@
 <template>
   <div class="home">
+    <div class="cover-image-right"></div>
+    <div class="cover-image-left"></div>
     <div class="section">
-      <div style="display: flex; flex-direction: column; width: 65%; gap: 5px;">
+      <div class="titles">
         <div class="title-abbreviation">SOU</div>
         <div class="title">Sharing Of Universe</div>
         <div class="description">Combine With Everything!</div>
-        <img class="cover-image" src="@/assets/images/Home/cover.png">
       </div>
-      <div style="display: flex; width: 65%; gap: 30px;">
+      <div class="buttons">
         <a id="show-documentation" class="button" lang="zh" @click="openModal('documentation')">重要公告</a>
         <router-link id="open-my-home-page" class="button" lang="zh" :to="{ name: 'MyHomePage' }">我的主页</router-link>
         <router-link id="open-articles-page" class="button" lang="zh" :to="{ name: 'Articles' }">文章</router-link>
@@ -64,28 +65,89 @@ import { useModal } from '@/composables/useModal';
 
 const { isModalVisible, modalType, openModal, closeModal } = useModal();
 
+const handleScroll = () => {
+  const scrollY = window.scrollY;
+  const index = Math.floor(scrollY / 200); // 每200px换一次
 
+  const isEven = index % 2 === 0;
+  document.querySelector('.cover-image-right').style.opacity = isEven ? 1 : 0;
+  document.querySelector('.cover-image-left').style.opacity = isEven ? 0 : 1;
+};
+
+onMounted(() => {
+    window.addEventListener('scroll', handleScroll); // 监听滚动事件
+});
 </script>
 
 <style scoped>
 /* home */
 .home {
   height: 100%;
-  width: max-content;
+  width: 100%;
   background-color: #eeeeee;
 }
 
 .section {
+  border: solid 2px #d90a0a;
   transform: translateY(60px);
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: 50px;
   width: 100%;
-  min-width: 800px;
   padding-top: 50px;
+  z-index: 2;
+}
+
+/* 右侧封面图片 */
+.cover-image-right {
+  position: fixed;
+  width: 60%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  /* filter: drop-shadow(0px 8px 12px rgba(0, 0, 0, 0.2)); */
+  background-image: url(@/assets/images/Home/home-background.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 30%);
+  opacity: 1; /* 初始可见 */
+  transition: opacity 0.8s ease;
+  /* border: solid 2px #000; */
+}
+
+/* 左侧封面图片 */
+.cover-image-left {
+  position: fixed;
+  width: 60%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url(@/assets/images/Home/home-background.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+  mask-image: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 30%);
+  opacity: 0; /* 初始隐藏 */
+  transition: opacity 0.8s ease;
+}
+
+/* title容器 */
+.titles {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: center;
+  transform: translateX(-20%);
+  width: 60%;
+  position: relative;
+  gap: 10px;
+  /* border: solid 2px #000; */
 }
 
 /* 缩略标题 */
@@ -109,14 +171,14 @@ const { isModalVisible, modalType, openModal, closeModal } = useModal();
   white-space: nowrap;
 }
 
-/* 封面图片 */
-.cover-image {
-  position: absolute;
-  width: 300px;
-  top: 50px;
-  right: 260px;
-  filter: drop-shadow(0px 8px 12px rgba(0, 0, 0, 0.2));
-  z-index: -1;
+/* 按钮容器 */
+.buttons {
+  display: flex;
+  /* justify-content: center; */
+  width: 60%;
+  transform: translateX(-20%);
+  gap: 30px;
+  /* border: solid 2px #000; */
 }
 
 /* 按钮 */
@@ -152,11 +214,12 @@ const { isModalVisible, modalType, openModal, closeModal } = useModal();
 
 /* 推荐链接容器 */
 .recommends {
-  width: 65%;
+  display: flex;
+  justify-content: center;
+  width: 85%;
   display: flex;
   gap: 40px;
-  padding: 20px;
-  overflow-x: auto;
+  /* border: solid 2px #000; */
 }
 
 /* 每个链接样式 */
@@ -164,14 +227,14 @@ const { isModalVisible, modalType, openModal, closeModal } = useModal();
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-end;
   border: solid 1px rgba(255, 255, 255, 0.2);
   width: 100%;
-  min-width: 200px;
+  min-width: 80px;
   max-width: 300px;
   height: 200px;
-  padding: 10px 20px;
+  padding: 10px 0px;
   border-radius: 24px;
   box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.25);
   background-size: cover;
@@ -200,23 +263,29 @@ const { isModalVisible, modalType, openModal, closeModal } = useModal();
 }
 
 .card h2 {
-  right: 0;
-  bottom: 10px;
+  width: 80%;
+  position: relative;
   font-size: 24px;
   color: #ffffff;
   text-shadow: 0px 0px 8px rgba(0, 0, 0, 0.8);
   letter-spacing: .5px;
-  white-space: nowrap;
+  -webkit-line-clamp: 1;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
 }
 
 .card p {
-  right: 0;
-  bottom: 0;
+  width: 80%;
+  position: relative;
   font-size: 14px;
   color: #ffffff;
   text-shadow: 0px 0px 8px rgba(0, 0, 0, 0.8);
   letter-spacing: .5px;
-  white-space: nowrap;
+  -webkit-line-clamp: 1;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
 }
 
 .modal-container h2 {

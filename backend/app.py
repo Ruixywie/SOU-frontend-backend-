@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from __init__ import create_app, db # 去 __init__.py 创建app
-from flask_cors import CORS
+from flask_cors import CORS # 实现跨域请求
 
 from routes.personal_routes import personal_blueprint
 from routes.fulilian_routes import fulilian_blueprint
