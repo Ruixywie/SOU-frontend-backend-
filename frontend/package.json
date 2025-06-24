@@ -12,6 +12,7 @@
     "axios": "^1.7.7",
     "cropperjs": "^1.6.2",
     "imagesloaded": "^5.0.0",
+    "lottie-web": "^5.13.0",
     "masonry-layout": "^4.2.2",
     "quill": "^2.0.2",
     "vue": "^3.5.10",

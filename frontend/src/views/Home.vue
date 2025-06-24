@@ -1,12 +1,12 @@
 <template>
   <div class="home">
-    <div class="cover-image-right"></div>
-    <div class="cover-image-left"></div>
-    <div class="section">
-      <div class="titles">
-        <div class="title-abbreviation">SOU</div>
-        <div class="title">Sharing Of Universe</div>
-        <div class="description">Combine With Everything!</div>
+    <div class="page-bg" ref="lottieContainer" id="top-animate"></div>
+    <div class="page-bg" id="second-page-bg"></div>
+    <div class='page-content' id="section1">
+      <div :class="['titles', isHidden ? 'hide' : 'show']">
+        <div class="title-abbreviation observe-fade">EmbraceU</div>
+        <div class="title observe-fade">Embracing Universe</div>
+        <div class="description observe-fade">Make Combination With Everything!</div>
       </div>
       <div class="buttons">
         <a id="show-documentation" class="button" lang="zh" @click="openModal('documentation')">重要公告</a>
@@ -14,6 +14,8 @@
         <router-link id="open-articles-page" class="button" lang="zh" :to="{ name: 'Articles' }">文章</router-link>
         <router-link id="to-login" class="button" lang="zh" :to="{ name: 'Login' }">登录</router-link>
       </div>
+    </div>
+    <div class='page-content' id="section2">
       <div class="recommends">
         <router-link class="card" :to="{ name: 'Fulilian' }">
           <h2 lang="zh">葬送的芙莉莲</h2>
@@ -59,24 +61,110 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import Modal from '@/components/Modal.vue';
 import { useModal } from '@/composables/useModal';
+import lottie from 'lottie-web'
 
 const { isModalVisible, modalType, openModal, closeModal } = useModal();
 
-const handleScroll = () => {
-  const scrollY = window.scrollY;
-  const index = Math.floor(scrollY / 200); // 每200px换一次
+const lottieContainer = ref(null)
+let animationInstance = null
 
-  const isEven = index % 2 === 0;
-  document.querySelector('.cover-image-right').style.opacity = isEven ? 1 : 0;
-  document.querySelector('.cover-image-left').style.opacity = isEven ? 0 : 1;
-};
+const currentPage = ref(0)
+
+const bgElements = ref([])
+const contentElements = ref([])
 
 onMounted(() => {
-    window.addEventListener('scroll', handleScroll); // 监听滚动事件
-});
+  // 背景和内容分别收集
+  bgElements.value = Array.from(document.querySelectorAll('.page-bg'))
+  contentElements.value = Array.from(document.querySelectorAll('.page-content'))
+
+  // 设置初始状态
+  setActive(currentPage.value)
+
+  const elements = document.querySelectorAll('.observe-fade');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('fade-in');
+        entry.target.classList.remove('fade-out');
+      } else {
+        entry.target.classList.remove('fade-in');
+        entry.target.classList.add('fade-out');
+      }
+    });
+  }, {
+    threshold: 0.1
+  });
+
+  // 设置层次感：依次延迟显示
+  elements.forEach((el, index) => {
+    el.style.transitionDelay = `${index * 100}ms`; // 每个元素延迟 100ms
+    observer.observe(el);
+  });
+
+  // 初始化 Lottie
+  if (lottieContainer.value) {
+    animationInstance = lottie.loadAnimation({
+      container: lottieContainer.value,
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: '/animations/top-animate.json',
+    })
+  }
+
+  // 节流滚动触发（防抖节流控制滚动频率）
+  let isScrolling = false
+  const delay = 1000 // 每次切换需等待
+
+  const handleScroll = (e) => {
+    if (isScrolling) return
+
+    const delta = e.deltaY
+    isScrolling = true
+
+    if (delta > 0 && currentPage.value < bgElements.value.length - 1) {
+      currentPage.value++
+    } else if (delta < 0 && currentPage.value > 0) {
+      currentPage.value--
+    }
+
+    setActive(currentPage.value)
+
+    setTimeout(() => {
+      isScrolling = false
+    }, delay)
+  }
+
+  window.addEventListener('wheel', handleScroll, { passive: false })
+})
+
+function setActive(index) {
+  // 背景切换
+  bgElements.value.forEach((el, i) => {
+    el.classList.toggle('active', i === index)
+  })
+
+  // 内容切换
+  contentElements.value.forEach((el, i) => {
+    el.classList.toggle('active', i === index)
+  })
+}
+
+onUnmounted(() => {
+  // 取消观察
+  const elements = document.querySelectorAll('.observe-fade')
+  elements.forEach(el => observer?.unobserve(el))
+
+  // 销毁动画
+  if (animationInstance) {
+    animationInstance.destroy()
+  }
+})
 </script>
 
 <style scoped>
@@ -84,40 +172,73 @@ onMounted(() => {
 .home {
   height: 100%;
   width: 100%;
-  background-color: #eeeeee;
+  background-color: #e6e5f2;
 }
 
-.section {
-  border: solid 2px #d90a0a;
+.page-bg, .page-content {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none; /* 防止鼠标交互冲突 */
+}
+.page-bg.active, .page-content.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#top-animate {
+  position: fixed;
+  top: -15%;
+  left: 0;
+  width: 110%;
+  z-index: 1;
+}
+
+#section1 {
+  border: solid 2px #000;
   transform: translateY(60px);
-  position: relative;
+  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 50px;
   width: 100%;
+  /* height: 2000px; */
   padding-top: 50px;
   z-index: 2;
+  /* display: none; */
 }
 
-/* 右侧封面图片 */
-.cover-image-right {
+/* 第二页背景图片 */
+#second-page-bg {
   position: fixed;
-  width: 60%;
+  width: 100%;
   height: 100%;
-  top: 0;
+  bottom: 0;
   right: 0;
   /* filter: drop-shadow(0px 8px 12px rgba(0, 0, 0, 0.2)); */
-  background-image: url(@/assets/images/Home/home-background.png);
+  background-image: url(@/assets/images/Home/secong-page-bg.png);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   z-index: 1;
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 30%);
-  opacity: 1; /* 初始可见 */
-  transition: opacity 0.8s ease;
   /* border: solid 2px #000; */
+}
+
+#section2 {
+  border: solid 2px #000;
+  transform: translateY(60px);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  width: 100%;
+  /* height: 2000px; */
+  padding-top: 50px;
+  z-index: 2;
+  /* display: none; */
 }
 
 /* 左侧封面图片 */
@@ -133,7 +254,8 @@ onMounted(() => {
   background-repeat: no-repeat;
   z-index: 1;
   mask-image: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 30%);
-  opacity: 0; /* 初始隐藏 */
+  opacity: 0;
+  /* 初始隐藏 */
   transition: opacity 0.8s ease;
 }
 
@@ -143,32 +265,56 @@ onMounted(() => {
   flex-direction: column;
   /* align-items: center; */
   justify-content: center;
-  transform: translateX(-20%);
-  width: 60%;
   position: relative;
-  gap: 10px;
+  width: 60%;
+  transform: translateX(-20%);
   /* border: solid 2px #000; */
+}
+
+.observe-fade {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-out {
+  opacity: 0;
+  transform: translateY(30px);
 }
 
 /* 缩略标题 */
 .title-abbreviation {
-  font-size: 60px;
+  font-family: 'Italianno-Regular';
+  font-size: 140px;
   color: #12d3e0;
+  opacity: 0.3;
+  letter-spacing: 4px;
   white-space: nowrap;
+  /* border: solid 2px #000; */
 }
 
 /* 标题 */
 .title {
-  font-size: 60px;
+  font-family: 'Italianno-Regular';
+  font-size: 140px;
+  opacity: 0.3;
+  letter-spacing: 4px;
   white-space: nowrap;
+  /* border: solid 2px #000; */
 }
 
 /* 简介 */
 .description {
-  margin-top: 10px;
+  margin-top: 40px;
   font-size: 30px;
   color: #8e8e8e;
   white-space: nowrap;
+  /* border: solid 2px #000; */
 }
 
 /* 按钮容器 */

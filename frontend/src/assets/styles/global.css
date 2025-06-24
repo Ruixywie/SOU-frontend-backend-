@@ -49,6 +49,30 @@ body,
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: 'LondrinaSolid-Regular';
+    src: url('@/assets/fonts/LondrinaSolid-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'LeagueSpartan-Regular';
+    src: url('@/assets/fonts/LeagueSpartan-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Arizonia-Regular';
+    src: url('@/assets/fonts/Arizonia-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'ZenTokyoZoo-Regular';
+    src: url('@/assets/fonts/ZenTokyoZoo-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 
 body {
     font-family: 'Montserrat-Regular';
